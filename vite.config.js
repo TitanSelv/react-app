@@ -4,4 +4,8 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: '127.0.0.1', // Принудительно используем IPv4 вместо localhost
+    port: 8000         // Можно поменять порт, если этот занят
+  }
 })
