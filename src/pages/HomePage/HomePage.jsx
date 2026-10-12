@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { QuestionCard } from "../../components/QuestionCard"
 import { API_URL } from "../../constants"
 import cls from "./HomePage.module.css"
+import { QuestionCardList } from "../../components/QuestionCardList/"
+import { Loader } from "../../components/Loader"
 
 
 
@@ -14,13 +15,12 @@ export const HomePage = () => {
                 const response = await fetch(`${API_URL}/react`);
                 const questions = await response.json();
 
-                if(!response.ok) {
+                if (!response.ok) {
                     throw new Error("Ошибка загрузки")
                 }
 
                 setCards(questions)
 
-                console.log(questions)
 
             } catch (error) {
                 console.log(error)
@@ -34,10 +34,8 @@ export const HomePage = () => {
 
     return (
         <>
-            {cards.map((card) => {
-                return <QuestionCard card={card} key={card.id} />
-            })}
+        <Loader />
+        <QuestionCardList cards={cards} />
         </>
-
     )
 }
