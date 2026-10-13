@@ -1,41 +1,42 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "../../constants"
-import cls from "./HomePage.module.css"
 import { QuestionCardList } from "../../components/QuestionCardList/"
 import { Loader } from "../../components/Loader"
+import { useFetch } from "../../hooks/useFetch"
 
 
 
 export const HomePage = () => {
-    const [cards, setCards] = useState([])
-
-    useEffect(() => {
-        const getQuestions = async () => {
-            try {
-                const response = await fetch(`${API_URL}/react`);
-                const questions = await response.json();
-
-                if (!response.ok) {
-                    throw new Error("Ошибка загрузки")
-                }
-
-                setCards(questions)
+    const [cards, setCards] = useState([]);
 
 
-            } catch (error) {
-                console.log(error)
-            }
+    const [getQuestions, isLoading, error] = useFetch(async (url) => {
+        const response = await fetch(`${API_URL}/${url}`)
+
+        if(!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`)
         }
 
-        getQuestions()
+        const questions = await response.json()
 
+        setCards(questions);
+
+        return questions;
+
+
+    })
+
+    useEffect(() => {
+        getQuestions("react")
     }, [])
 
 
     return (
         <>
-        <Loader />
-        <QuestionCardList cards={cards} />
+
+            {isLoading && <Loader />}
+            {error && <p>{error}</p>}
+            <QuestionCardList cards={cards} />
         </>
     )
 }
