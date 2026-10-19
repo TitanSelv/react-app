@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom"
 import { Button } from "../Button"
 import cls from "./QuestionCard.module.css"
+import { memo } from "react"
 
 
-export const QuestionCard = ({ card }) => {
+export const QuestionCard = memo(({ card }) => {
 
     const navigate = useNavigate()
     return (
@@ -23,5 +24,5 @@ export const QuestionCard = ({ card }) => {
 
         </div>
 
-    )
-}
+    );
+});
