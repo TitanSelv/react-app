@@ -13,7 +13,7 @@
 
 .noCards {
     width: fit-content;
-    margin: 30px auto;
+    margin: 10px auto;
 }
 
 .sortSelect{ 
@@ -26,6 +26,18 @@
     color: var(--text-color);
     padding: 5px;
     flex-grow: 1;
+}
+
+.paginationContainer {
+    width: fit-content;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px 10px 25px 10px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 

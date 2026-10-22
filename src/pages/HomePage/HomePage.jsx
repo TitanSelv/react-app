@@ -1,20 +1,33 @@
-import { useEffect, useMemo, useState } from "react"
-import { API_URL } from "../../constants"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { API_URL, countSort, sortSelect } from "../../constants"
 import { QuestionCardList } from "../../components/QuestionCardList/"
 import { Loader } from "../../components/Loader"
 import { useFetch } from "../../hooks/useFetch"
 import cls from "./HomePage.module.css"
 import { SearchInput } from "../../components/SearchInput";
+import { Button } from "../../components/Button"
+import { SortSelect } from "../../components/sortSelect"
 
 
+const DEFAUL_PER_PAGE = 10;
 
 
 export const HomePage = () => {
-    const [cards, setCards] = useState([]);;
+    const [cards, setCards] = useState({});;
     const [searchValue, setSearchValue] = useState("");
     const [sortValue, setSortValue] = useState("");
+    const [countSelectValue, setCountSelectValue] = useState("10");
+    const [searchParams, setSearchParams] = useState(`?_page=1&_per_page=${DEFAUL_PER_PAGE}`);
+    const controlsContainerRef = useRef();
 
 
+    const getActivePageButton = () => {
+        if (cards.next === null) {
+            return cards.pages;
+        } else {
+            return cards.next - 1;
+        };
+    };
 
     const [getQuestions, isLoading, error] = useFetch(async (url) => {
         const response = await fetch(`${API_URL}/${url}`)
@@ -33,12 +46,21 @@ export const HomePage = () => {
     });
 
     const filterCards = useMemo(() => {
-        return cards.filter((card) => card.question.toLowerCase().includes(searchValue.trim().toLocaleLowerCase()));
+
+        if (cards?.data) {
+            if (searchValue.trim()) {
+                return cards.data.filter((card) => card.question.toLowerCase().includes(searchValue.trim().toLocaleLowerCase()));
+            } else {
+                return cards.data
+            }
+        }
+        return [];
+
     }, [cards, searchValue]);
 
     useEffect(() => {
-        getQuestions(`react?${sortValue}`)
-    }, [sortValue]);
+        getQuestions(`react${searchParams}`)
+    }, [searchParams]);
 
     const refHandler = (e) => {
         setSearchValue(e.target.value)
@@ -46,32 +68,58 @@ export const HomePage = () => {
 
     const sortValueHandler = (e) => {
         setSortValue(e.target.value)
+        setSearchParams(`?_page=1&_per_page=${countSelectValue}&${e.target.value}`)
+    }
+
+    const paginationHandler = (e) => {
+        if (e.target.tagName === "BUTTON") {
+            setSearchParams(`?_page=${e.target.textContent}&_per_page=${countSelectValue}&${sortValue}`);
+            controlsContainerRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    }
+
+    const pagination = useMemo(() => {
+        const totalCardsCount = cards?.pages || 0;
+        return Array(totalCardsCount).fill(0).map((_, i) => i + 1);
+    }, [cards]);
+
+    const countSelectHandler = (e) => {
+        setCountSelectValue(e.target.value);
+        setSearchParams(`?_page=1&_per_page=${e.target.value}&${sortValue}`);
     }
 
 
     return (
         <>
-            <div className={cls.controlsContainer}>
+            <div className={cls.controlsContainer} ref={controlsContainerRef}>
                 <SearchInput value={searchValue} onChange={refHandler} ph={"Search..."} />
 
-                <select className={cls.sortSelect} value={sortValue} onChange={sortValueHandler}>
-                    <option value="" >Sort By</option>
-                    <hr />
-                    <option value="_sort=level">Level ABC</option>
-                    <option value="_sort=-level">Level CBA</option>
-                    <option value="_sort=completed">Complited</option>
-                    <option value="_sort=-completed">No Complited</option>
-                </select>
+                <SortSelect value={sortValue} onChange={sortValueHandler} name="Sort By" constants={sortSelect} />
+
+                <SortSelect nameDisabled={true} value={countSelectValue} onChange={countSelectHandler} name="Count" constants={countSort} />
+
+
 
             </div>
 
             {isLoading && <Loader />}
             {error && <p>{error}</p>}
-
-            {filterCards.length === 0 && <p className={cls.noCards}>Nothing found...</p>}
-            
-
             <QuestionCardList cards={filterCards} />
+
+
+            {filterCards.length === 0 ? <p className={cls.noCards}>Nothing found...</p> :
+                (pagination.length > 1 && <div className={cls.paginationContainer} onClick={paginationHandler}>
+                    {pagination.map((value) => {
+                        return <Button isActive={value === getActivePageButton()} key={value}>{value}</Button>
+                    })}
+                </div>)
+            }
+
+
+
+
+
+
         </>
     )
 }
