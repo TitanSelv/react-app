@@ -1,4 +1,4 @@
-import cls from "./sortSelect.module.css";
+import cls from "./SortSelect.module.css";
 
 export const SortSelect = (props) => {
     return (
