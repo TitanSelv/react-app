@@ -5,8 +5,8 @@ import { Loader } from "../../components/Loader"
 import { useFetch } from "../../hooks/useFetch"
 import cls from "./HomePage.module.css"
 import { SearchInput } from "../../components/SearchInput";
-import { Button } from "../../components/Button"
 import { SortSelect } from "../../components/sortSelect"
+import { Pagination } from "../../components/Pagination"
 
 
 const DEFAUL_PER_PAGE = 10;
@@ -21,13 +21,28 @@ export const HomePage = () => {
     const controlsContainerRef = useRef();
 
 
-    const getActivePageButton = () => {
-        if (cards.next === null) {
-            return cards.pages;
-        } else {
-            return cards.next - 1;
-        };
+    const currentPage =
+        Number(new URLSearchParams(searchParams).get("_page")) || 1;
+
+    const totalPages = cards?.pages || 0;
+
+    const paginationHandler = (page) => {
+        if (page === currentPage) return;
+        const params = new URLSearchParams();
+        params.set("_page", page);
+        params.set("_per_page", countSelectValue);
+        if (searchValue.trim()) {
+            params.set("question:contains", searchValue.trim());
+        }
+        new URLSearchParams(sortValue.replace(/^[?&]+/, ""))
+            .forEach((value, key) => params.set(key, value));
+        setSearchParams(`?${params.toString()}`);
+        controlsContainerRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
     };
+
 
     const [getQuestions, isLoading, error] = useFetch(async (url) => {
         const response = await fetch(`${API_URL}/${url}`)
@@ -46,46 +61,59 @@ export const HomePage = () => {
     });
 
     const filterCards = useMemo(() => {
-
-        if (cards?.data) {
-            if (searchValue.trim()) {
-                return cards.data.filter((card) => card.question.toLowerCase().includes(searchValue.trim().toLocaleLowerCase()));
-            } else {
-                return cards.data
-            }
-        }
-        return [];
-
-    }, [cards, searchValue]);
+        return cards?.data || [];
+    }, [cards]);
 
     useEffect(() => {
         getQuestions(`react${searchParams}`)
     }, [searchParams]);
 
     const refHandler = (e) => {
-        setSearchValue(e.target.value)
+        const value = e.target.value;
+        setSearchValue(value);
+        const params = new URLSearchParams();
+        params.set("_page", "1");
+        params.set("_per_page", countSelectValue);
+        if (value.trim()) {
+            params.set("question:contains", value.trim());
+        }
+        const sortParams = new URLSearchParams(
+            sortValue.replace(/^[?&]+/, "")
+        );
+        sortParams.forEach((v, k) => params.set(k, v));
+        setSearchParams(`?${params.toString()}`);
     };
 
     const sortValueHandler = (e) => {
-        setSortValue(e.target.value)
-        setSearchParams(`?_page=1&_per_page=${countSelectValue}&${e.target.value}`)
-    }
-
-    const paginationHandler = (e) => {
-        if (e.target.tagName === "BUTTON") {
-            setSearchParams(`?_page=${e.target.textContent}&_per_page=${countSelectValue}&${sortValue}`);
-            controlsContainerRef.current.scrollIntoView({ behavior: "smooth" })
+        const value = e.target.value;
+        setSortValue(value);
+        const params = new URLSearchParams();
+        params.set("_page", "1");
+        params.set("_per_page", countSelectValue);
+        if (searchValue.trim()) {
+            params.set("question:contains", searchValue.trim());
         }
+        new URLSearchParams(value.replace(/^[?&]+/, ""))
+            .forEach((v, k) => params.set(k, v));
+        setSearchParams(`?${params.toString()}`);
     }
 
-    const pagination = useMemo(() => {
-        const totalCardsCount = cards?.pages || 0;
-        return Array(totalCardsCount).fill(0).map((_, i) => i + 1);
-    }, [cards]);
+
+
+
 
     const countSelectHandler = (e) => {
-        setCountSelectValue(e.target.value);
-        setSearchParams(`?_page=1&_per_page=${e.target.value}&${sortValue}`);
+        const value = e.target.value;
+        setCountSelectValue(value);
+        const params = new URLSearchParams();
+        params.set("_page", "1");
+        params.set("_per_page", value);
+        if (searchValue.trim()) {
+            params.set("question:contains", searchValue.trim());
+        }
+        new URLSearchParams(sortValue.replace(/^[?&]+/, ""))
+            .forEach((v, k) => params.set(k, v));
+        setSearchParams(`?${params.toString()}`);
     }
 
 
@@ -107,13 +135,15 @@ export const HomePage = () => {
             <QuestionCardList cards={filterCards} />
 
 
-            {filterCards.length === 0 ? <p className={cls.noCards}>Nothing found...</p> :
-                (pagination.length > 1 && <div className={cls.paginationContainer} onClick={paginationHandler}>
-                    {pagination.map((value) => {
-                        return <Button isActive={value === getActivePageButton()} key={value}>{value}</Button>
-                    })}
-                </div>)
-            }
+            {filterCards.length === 0 ? (
+                <p className={cls.noCards}>Nothing found...</p>
+            ) : (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={paginationHandler}
+                />
+            )}
 
 
 

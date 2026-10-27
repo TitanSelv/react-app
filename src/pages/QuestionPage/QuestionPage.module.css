@@ -1,0 +1,83 @@
+.container {
+    width: 100%;
+    max-width: 600px;
+    height: max-content;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--card-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 25px;
+
+    button {
+        width: 100%;
+    }
+}
+
+.cardStat {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+    width: 100%;
+    gap: 10px;
+}
+
+.editDate {
+    font-size: 14px;
+    font-style: italic;
+    margin-left: auto;
+}
+
+.cardTitle {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.cardDescription {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.cardAnswers {
+    opacity: .65;
+    margin-top: auto;
+}
+
+.CardAnswer {
+    font-size: 14px;
+    font-style: italic;
+    text-align: justify;
+}
+
+.cardLinks {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+
+    li {
+        margin-left: 15px;
+    }
+}
+
+.checkboxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p {
+        font-size: 14px;
+        padding-bottom: 1px;
+    }
+}
+
+.checkboxInput {
+    width: 20px;
+    height: 20px;
+    accent-color: #5dc444;
+}

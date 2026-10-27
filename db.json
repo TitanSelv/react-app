@@ -46,7 +46,7 @@
         "https://react.dev/learn/your-first-component"
       ],
       "level": 1,
-      "completed": false,
+      "completed": true,
       "editDate": "21.02.2025, 20:26"
     },
     {
@@ -565,5 +565,6 @@
       "level": 1,
       "completed": false
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

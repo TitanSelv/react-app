@@ -5,8 +5,8 @@ export const SortSelect = (props) => {
         <select className={cls.sortSelect} value={props.value} onChange={props.onChange}>
             <option disabled={props.nameDisabled} value="" >{props.name}</option>
             <hr />
-            {props.constants.map((constant) => {
-                return <option value={constant.value}>{constant.title}</option>
+            {props.constants.map((constant, index) => {
+                return <option key={index} value={constant.value}>{constant.title}</option>
             })}
         </select>
     );
