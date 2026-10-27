@@ -121,8 +121,7 @@ export const HomePage = () => {
         <>
             <div className={cls.controlsContainer} ref={controlsContainerRef}>
                 <SearchInput value={searchValue} onChange={refHandler} ph={"Search..."} />
-                
-                12351
+
                 <SortSelect value={sortValue} onChange={sortValueHandler} name="Sort By" constants={sortSelect} />
 
                 <SortSelect nameDisabled={true} value={countSelectValue} onChange={countSelectHandler} name="Count" constants={countSort} />
