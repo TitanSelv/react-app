@@ -21,7 +21,7 @@ export const QuestionPage = () => {
         if (!response.ok) {
             throw new Error(`Ошибка HTTP: ${response.status}`)
         }
-        const data = await response.json()
+        const data = await response.json();
         setCard(data);
     });
 

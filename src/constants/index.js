@@ -42,3 +42,18 @@ export const countSort = [
         title: "100"
     }
 ];
+
+export const level = [
+    {
+        value: "1",
+        title: "1 - easiest"
+    },
+    {
+        value: "2",
+        title: "2 - medium"
+    },
+    {
+        value: "3",
+        title: "3 - hardest"
+    }
+];

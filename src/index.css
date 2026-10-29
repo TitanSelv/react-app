@@ -6,6 +6,8 @@
   --btn-text-color: #000000;
   --card-bg-color: #222832;
   --card-text-color: #ffffff;
+  --green-color: #2d7551;
+  --checkbox-color: #5dc444;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -30,6 +32,8 @@
     --btn-text-color: #000000;
     --card-bg-color: #222832;
     --card-text-color: #ffffff;
+    --green-color: #2d7551;
+    --checkbox-color: #5dc444;
 
     color-scheme: dark;
 
@@ -47,6 +51,8 @@
     --btn-text-color: #ffffff;
     --card-bg-color: #ebebeb;
     --card-text-color: #141313;
+    --green-color: #2d7551;
+    --checkbox-color: #5dc444;
 
     color-scheme: light;
 
