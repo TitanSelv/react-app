@@ -1,74 +1,60 @@
-import { Button } from '../../components/Button';
-import { SortSelect } from '../../components/sortSelect';
-import { level } from '../../constants';
+import { useActionState } from 'react';
+import { API_URL } from '../../constants';
 import cls from './AddQuestionPage.module.css';
+import { toast } from 'react-toastify';
+import { delayFn } from '../../helpers/delayFn';
+import { Loader } from '../../components/Loader';
+import QuestionForm from '../../components/QuestionForm/QuestionForm';
 
-export const AddQuestionPage = () => {
+const createActionState = async (_prev, formData) => {
+
+    try {
+        const formValues = Object.fromEntries(formData);
+        const resources = formValues.resources.trim();
+        await delayFn();
+        const response = await fetch(`${API_URL}/react/`, {
+            method: "POST",
+            body: JSON.stringify({
+                question: formValues.question,
+                answer: formValues.answer,
+                description: formValues.description,
+                resources: resources.length ? resources.split(",") : [],
+                level: Number(formValues.level),
+                completed: false,
+                editDate: undefined
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        };
+
+        const question = await response.json();
+        toast.success("A new question has been successfully created");
+        return formValues.clearForm ? {} : question;
+
+    } catch (error) {
+        toast.error(error.message);
+        return {};
+    }
+
+}
+
+const AddQuestionPage = () => {
+
+    const [stateForm, formAction, isPanding] = useActionState(createActionState, { clearForm: true });
+
+
     return (
         <>
+
+            {isPanding && <Loader /> }
             <h1 className={cls.formTitle}>Add new question</h1>
             <div className={cls.formContainer}>
-                <form action="" className={cls.form}>
-                    <div className={cls.formControl}>
-                        <label htmlFor="questionField">Question: </label>
-                        <textarea
-                            defaultValue={"defaultValue"}
-                            name="question"
-                            id="questionField"
-                            cols="30"
-                            rows="2"
-                            required
-                            placeholder='please enter a question'
-                        ></textarea>
-                    </div>
-                    <div className={cls.formControl}>
-                        <label htmlFor="answerField">Short Answer: </label>
-                        <textarea
-                            defaultValue={"defaultValue"}
-                            name="answer"
-                            id="answerField"
-                            cols="30"
-                            rows="2"
-                            required
-                            placeholder='please enter a short answer'
-                        ></textarea>
-                    </div>
-                    <div className={cls.formControl}>
-                        <label htmlFor="descriptionField">Description: </label>
-                        <textarea
-                            defaultValue={"defaultValue"}
-                            name="description"
-                            id="descriptionField"
-                            cols="30"
-                            rows="5"
-                            required
-                            placeholder='please enter a full description'
-                        ></textarea>
-                    </div>
-                    <div className={cls.formControl}>
-                        <label htmlFor="resourcesField">Resources: </label>
-                        <textarea
-                            defaultValue={"defaultValue"}
-                            name="resources"
-                            id="resourcesField"
-                            cols="30"
-                            rows="5"
-                            required
-                            placeholder='please enter resources separated by commas'
-                        ></textarea>
-                    </div>
-                    <div className={cls.formControl}>
-                        <label htmlFor="levelField">Level: </label>
-                        <SortSelect id="levelField" name="Level" constants={level} className={cls.levelSelect} />
-                    </div>
-
-                    <label htmlFor="clearFormField" className={cls.clearFormControl}>
-                        <input className={cls.checkbox} type="checkbox" name="clearForm" id="clearFormField" defaultChecked={true}/>
-                        <span>clear form after submitting?</span>
-                    </label>
-                    <Button>Add question</Button>
-                </form>
+                <QuestionForm formAction={formAction} stateForm={stateForm} isPanding={isPanding} btnText="Add Question"/>
             </div>
         </>
     );
 };
+
+export default AddQuestionPage;
