@@ -39,6 +39,8 @@
 }
 
 .cardDescription {
+    max-width: 100%;
+    overflow-wrap: break-word;
     font-size: 18px;
     line-height: 24px;
 }
@@ -76,8 +78,39 @@
     }
 }
 
-.checkboxInput {
-    width: 20px;
-    height: 20px;
-    accent-color: #5dc444;
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #777;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    flex-shrink: 0;
+}
+
+.checkbox:checked {
+    background-color: var(--checkbox-color);
+}
+
+.checkbox:checked::before {
+    content: "";
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.checkbox:not(:checked) {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border: 1px solid #777;
+    border-radius: 4px;
 }

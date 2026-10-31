@@ -2,7 +2,7 @@ import cls from "./SortSelect.module.css";
 
 export const SortSelect = (props) => {
     return (
-        <select className={cls.sortSelect} value={props.value} onChange={props.onChange}>
+        <select defaultValue={props.defaultValue} name={props.name} id={props.id} className={`${cls.sortSelect} ${props.className || ""}`} value={props.value} onChange={props.onChange}>
             <option disabled={props.nameDisabled} value="" >{props.name}</option>
             <hr />
             {props.constants.map((constant, index) => {

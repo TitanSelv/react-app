@@ -1,0 +1,90 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 30px 15px;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.formControl {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    label {
+        color: var(--text-color);
+        font-size: 18px;
+    }
+
+    textarea {
+        padding: 10px 5px;
+        border-radius: 10px;
+        background-color: var(--main-bg-color);
+        color: var(--text-color);
+        font-size: 16px;
+        border: none;
+        outline: none;
+    }
+
+    select:focus-visible, textarea:focus-visible {
+        outline: 2px solid var(--green-color);
+    }
+}
+
+.levelSelect {
+    width: 100%;
+    background-color: var(--main-bg-color) !important;
+    color: var(--text-color);
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.clearFormControl {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #777;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    flex-shrink: 0;
+}
+
+.checkbox:checked {
+    background-color: var(--checkbox-color);
+}
+
+.checkbox:checked::before {
+    content: "";
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.checkbox:not(:checked) {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border: 1px solid #777;
+    border-radius: 4px;
+}
+
+.checkbox:disabled+span {
+    opacity: .5;
+}

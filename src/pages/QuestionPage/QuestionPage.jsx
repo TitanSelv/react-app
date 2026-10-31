@@ -21,7 +21,7 @@ export const QuestionPage = () => {
         if (!response.ok) {
             throw new Error(`Ошибка HTTP: ${response.status}`)
         }
-        const data = await response.json()
+        const data = await response.json();
         setCard(data);
     });
 
@@ -35,7 +35,7 @@ export const QuestionPage = () => {
         }
         const data = await response.json()
         setCard(data);
-        {isChecked && toast.success("Completed")};
+        { isChecked && toast.success("Completed") };
     });
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export const QuestionPage = () => {
     const onChangeCheckboxHandler = (e) => {
         const checkedValue = e.target.checked;
         updateCard(checkedValue);
-        
+
     };
 
     const levelCards = () => (card.level === 1 ? "green" : card.level === 2 ? "orange" : "red");
@@ -76,8 +76,7 @@ export const QuestionPage = () => {
                     <p>Short Answer:</p>
                     <label className={cls.CardAnswer}> {card.answer} </label>
                 </div>
-
-                <ul className={cls.cardLinks}>
+                {card.resources.length > 0 && <ul className={cls.cardLinks}>
                     Resourses:
                     {card.resources.map((link, index) => {
                         return <li key={index}>
@@ -86,11 +85,12 @@ export const QuestionPage = () => {
                             </a>
                         </li>
                     })}
-                </ul>
+                </ul>}
+
 
                 <label className={cls.checkboxWrapper} htmlFor={checkboxId}>
                     <input
-                        className={cls.checkboxInput}
+                        className={cls.checkbox}
                         type="checkbox"
                         id={checkboxId}
                         checked={card.completed}
