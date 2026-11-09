@@ -1,11 +1,16 @@
+
 import { level } from '../../constants';
 import { Button } from '../Button';
 import { SortSelect } from '../sortSelect';
 import cls from './QuestionForm.module.css';
 
-const QuestionForm = ({formAction, stateForm, isPanding, btnText}) => {
+const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox }) => {
+
+
+
     return (
         <form action={formAction} className={cls.form}>
+            <input type="text" name="questionId" defaultValue={stateForm.id} hidden />
             <div className={cls.formControl}>
                 <label htmlFor="questionField">Question: </label>
                 <textarea
@@ -57,11 +62,11 @@ const QuestionForm = ({formAction, stateForm, isPanding, btnText}) => {
                 <label htmlFor="levelField">Level: </label>
                 <SortSelect nameDisabled={true} defaultValue={stateForm.Level} id="levelField" name="level" constants={level} className={cls.levelSelect} />
             </div>
-
-            <label htmlFor="clearFormField" className={cls.clearFormControl}>
+            {clearCheckbox && <label htmlFor="clearFormField" className={cls.clearFormControl}>
                 <input className={cls.checkbox} type="checkbox" name="clearForm" id="clearFormField" defaultChecked={stateForm.clearForm} />
                 <span>clear form after submitting?</span>
-            </label>
+            </label>}
+
             <Button disabled={isPanding} >{isPanding ? "Загрузка..." : btnText}</Button>
         </form>
     );

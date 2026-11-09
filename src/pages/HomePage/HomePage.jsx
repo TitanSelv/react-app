@@ -21,8 +21,7 @@ export const HomePage = () => {
     const controlsContainerRef = useRef();
 
 
-    const currentPage =
-        Number(new URLSearchParams(searchParams).get("_page")) || 1;
+    const currentPage = Number(new URLSearchParams(searchParams).get("_page")) || 1;
 
     const totalPages = cards?.pages || 0;
 
@@ -69,20 +68,31 @@ export const HomePage = () => {
     }, [searchParams]);
 
     const refHandler = (e) => {
-        const value = e.target.value;
-        setSearchValue(value);
-        const params = new URLSearchParams();
-        params.set("_page", "1");
-        params.set("_per_page", countSelectValue);
-        if (value.trim()) {
-            params.set("question:contains", value.trim());
-        }
-        const sortParams = new URLSearchParams(
-            sortValue.replace(/^[?&]+/, "")
-        );
-        sortParams.forEach((v, k) => params.set(k, v));
-        setSearchParams(`?${params.toString()}`);
+        setSearchValue(e.target.value);
     };
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            const params = new URLSearchParams();
+
+            params.set("_page", "1");
+            params.set("_per_page", countSelectValue);
+
+            if (searchValue.trim()) {
+                params.set("question:contains", searchValue.trim());
+            }
+
+            const sortParams = new URLSearchParams(
+                sortValue.replace(/^[?&]+/, "")
+            );
+
+            sortParams.forEach((v, k) => params.set(k, v));
+
+            setSearchParams(`?${params.toString()}`);
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [searchValue]);
 
     const sortValueHandler = (e) => {
         const value = e.target.value;

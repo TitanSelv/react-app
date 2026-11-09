@@ -6,6 +6,7 @@ import { delayFn } from '../../helpers/delayFn';
 import { Loader } from '../../components/Loader';
 import QuestionForm from '../../components/QuestionForm/QuestionForm';
 
+
 const createActionState = async (_prev, formData) => {
 
     try {
@@ -40,6 +41,8 @@ const createActionState = async (_prev, formData) => {
 
 }
 
+
+
 const AddQuestionPage = () => {
 
     const [stateForm, formAction, isPanding] = useActionState(createActionState, { clearForm: true });
@@ -51,7 +54,7 @@ const AddQuestionPage = () => {
             {isPanding && <Loader /> }
             <h1 className={cls.formTitle}>Add new question</h1>
             <div className={cls.formContainer}>
-                <QuestionForm formAction={formAction} stateForm={stateForm} isPanding={isPanding} btnText="Add Question"/>
+                <QuestionForm clearCheckbox="true" formAction={formAction} stateForm={stateForm} isPanding={isPanding} btnText="Add Question"/>
             </div>
         </>
     );
