@@ -1,65 +1,33 @@
 :root {
-  --main-bg-color: #171d35;
-  --text-color: #ffffff;
-
-  --btn-bg-color: #c7c5c3;
-  --btn-text-color: #000000;
-  --card-bg-color: #222832;
-  --card-text-color: #ffffff;
+  --main-bg-color: #ffffff;
+  --text-color: #000;
+  --btn-bg-color: #3f4d4a;
+  --btn-text-color: #ffffff;
+  --card-bg-color: #ebebeb;
+  --card-text-color: #141313;
   --green-color: #2d7551;
   --checkbox-color: #5dc444;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light dark;
-
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  color-scheme: light;
 }
 
+.darkLayout {
+  --main-bg-color: #171d35;
+  --text-color: #fff;
+  --btn-bg-color: #c6cceb;
+  --btn-text-color: #000000;
+  --card-bg-color: #222832;
+  --card-text-color: #ffffff;
+  --green-color: #2d7551;
+  --checkbox-color: #5dc444;
 
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-bg-color: #171d35;
-    --text-color: #fff;
-    --btn-bg-color: #c6cceb;
-    --btn-text-color: #000000;
-    --card-bg-color: #222832;
-    --card-text-color: #ffffff;
-    --green-color: #2d7551;
-    --checkbox-color: #5dc444;
-
-    color-scheme: dark;
-
-
-  }
-
-
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --main-bg-color: #ffffff;
-    --text-color: #000;
-    --btn-bg-color: #3f4d4a;
-    --btn-text-color: #ffffff;
-    --card-bg-color: #ebebeb;
-    --card-text-color: #141313;
-    --green-color: #2d7551;
-    --checkbox-color: #5dc444;
-
-    color-scheme: light;
-
-
-  }
-
-
+  color-scheme: dark;
 }
 
 * {

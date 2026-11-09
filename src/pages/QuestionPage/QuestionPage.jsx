@@ -7,6 +7,7 @@ import { API_URL } from '../../constants';
 import { useFetch } from '../../hooks/useFetch';
 import { Loader, SmallLoader } from '../../components/Loader';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../hooks/useAuth';
 
 
 
@@ -14,7 +15,9 @@ export const QuestionPage = () => {
 
     const [card, setCard] = useState(null)
     const checkboxId = useId();
-    const { id } = useParams()
+    const { id } = useParams();
+    const { isAuth } = useAuth();
+    const navigate = useNavigate();
 
     const [getCard, isCardLoading] = useFetch(async () => {
         const response = await fetch(`${API_URL}/react/${id}`)
@@ -54,7 +57,6 @@ export const QuestionPage = () => {
     const levelCards = () => (card.level === 1 ? "green" : card.level === 2 ? "orange" : "red");
     const completedCards = () => (card.completed ? "green" : "primary");
 
-    const navigate = useNavigate();
     return (
 
         <>
@@ -102,7 +104,7 @@ export const QuestionPage = () => {
                 </label>
 
 
-                <Button onClick={() => navigate(`/addquestion/${card.id}`)} disabled={isCardUpdating}>Edit Question</Button>
+                {isAuth && <Button onClick={() => navigate(`/editquestion/${card.id}`)} disabled={isCardUpdating}>Edit Question</Button>}
                 <Button onClick={() => navigate("/")} disabled={isCardUpdating}>Back</Button>
 
             </div>}

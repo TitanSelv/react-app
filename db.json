@@ -7,8 +7,8 @@
       "description": "React — это JavaScript-библиотека, разработанная Facebook, которая используется для построения UI с компонентным подходом. React позволяет вам создавать пользовательские интерфейсы из отдельных частей, называемых компонентами.",
       "resources": [],
       "level": 1,
-      "completed": true,
-      "editDate": "03.02.2025, 19:49"
+      "completed": false,
+      "editDate": "03.11.2026, 22:21"
     },
     {
       "id": "2",
@@ -18,9 +18,9 @@
       "resources": [
         "https://react.dev/learn/writing-markup-with-jsx"
       ],
-      "level": 2,
+      "level": 1,
       "completed": false,
-      "editDate": "03.02.2025, 20:25"
+      "editDate": "03.11.2026, 22:12"
     },
     {
       "id": "3",
