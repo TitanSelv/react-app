@@ -42,7 +42,7 @@ export const Pagination = ({
     totalPages,
     onPageChange,
 }) => {
-    if (totalPages <= 1) return null;
+    if (totalPages <= 1) {return null;}
 
     const pages = getPagination(currentPage, totalPages);
 

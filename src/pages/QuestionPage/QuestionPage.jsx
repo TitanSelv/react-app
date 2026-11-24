@@ -38,7 +38,9 @@ export const QuestionPage = () => {
         }
         const data = await response.json()
         setCard(data);
-        { isChecked && toast.success("Completed") };
+        if (isChecked) {
+            toast.success("Completed");
+        };
     });
 
     useEffect(() => {
@@ -51,7 +53,6 @@ export const QuestionPage = () => {
     const onChangeCheckboxHandler = (e) => {
         const checkedValue = e.target.checked;
         updateCard(checkedValue);
-
     };
 
     const levelCards = () => (card.level === 1 ? "green" : card.level === 2 ? "orange" : "red");

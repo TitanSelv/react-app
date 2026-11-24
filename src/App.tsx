@@ -12,9 +12,9 @@ import { AuthProvider } from "./auth/AuthProvider";
 
 const ProtectedRoutes = () => {
   const { isAuth } = useAuth();
-  const locaion = useLocation();
+  const location = useLocation();
 
-  return isAuth ? <Outlet /> : <Navigate to="/forbidden" state={{ from: locaion.pathname }} replace />
+  return isAuth ? <Outlet /> : <Navigate to="/forbidden" state={{ from: location.pathname }} replace />
 };
 
 function App() {

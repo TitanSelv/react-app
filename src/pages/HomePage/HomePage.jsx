@@ -26,7 +26,7 @@ export const HomePage = () => {
     const totalPages = cards?.pages || 0;
 
     const paginationHandler = (page) => {
-        if (page === currentPage) return;
+        if (page === currentPage) {return;}
         const params = new URLSearchParams();
         params.set("_page", page);
         params.set("_per_page", countSelectValue);
