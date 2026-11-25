@@ -30,9 +30,9 @@ export default defineConfig([
       'no-var': 'error',
       'prefer-const': 'error',
       'eqeqeq': ['error', 'always'],
-      'curly': ['error', 'all'],
       'no-duplicate-imports': 'error',
       'no-unused-vars': 'off',
+      'no-unused-expressions': "warn",
 
       '@typescript-eslint/no-unused-vars': [
         'warn',

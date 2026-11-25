@@ -2,20 +2,31 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Badge } from '../../components/Badge/Badge';
 import { Button } from '../../components/Button';
 import cls from './QuestionPage.module.css';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useState, type ChangeEvent } from 'react';
 import { API_URL } from '../../constants';
 import { useFetch } from '../../hooks/useFetch';
 import { Loader, SmallLoader } from '../../components/Loader';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
 
+export interface ICard {
+    id: number;
+    question: string;
+    answer: string;
+    description: string;
+    resources: string[];
+    level: 1 | 2 | 3;
+    completed: boolean;
+    editDate?: string;
+}
 
+type Color = 'green' | 'orange' | 'red';
 
 export const QuestionPage = () => {
 
-    const [card, setCard] = useState(null)
+    const [card, setCard] = useState<ICard | null>(null)
     const checkboxId = useId();
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const { isAuth } = useAuth();
     const navigate = useNavigate();
 
@@ -31,6 +42,9 @@ export const QuestionPage = () => {
     const [updateCard, isCardUpdating] = useFetch(async (isChecked) => {
         const response = await fetch(`${API_URL}/react/${id}`, {
             method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ completed: isChecked })
         })
         if (!response.ok) {
@@ -44,19 +58,20 @@ export const QuestionPage = () => {
     });
 
     useEffect(() => {
-        getCard(card)
-    }, []);
+        if (!id) return;
+        getCard()
+    }, [id]);
 
 
 
 
-    const onChangeCheckboxHandler = (e) => {
+    const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>): void => {
         const checkedValue = e.target.checked;
         updateCard(checkedValue);
     };
 
-    const levelCards = () => (card.level === 1 ? "green" : card.level === 2 ? "orange" : "red");
-    const completedCards = () => (card.completed ? "green" : "primary");
+    const levelCards = (): Color => (card?.level === 1 ? "green" : card?.level === 2 ? "orange" : "red");
+    const completedCards = (): "green" | "primary" => (card?.completed ? "green" : "primary");
 
     return (
 
@@ -65,7 +80,7 @@ export const QuestionPage = () => {
             {card !== null && <div className={cls.container}>
                 <div className={cls.cardStat}>
                     <Badge variant={levelCards()}>Level: {card.level}</Badge>
-                    <Badge variant={completedCards()}> {card.completed ? "Completed" : "No Completed"} </Badge>
+                    <Badge variant={completedCards()}> {card.completed ? "Completed" : "Not completed"} </Badge>
 
                     {card?.editDate && <p className={cls.editDate}>{card.editDate}</p>}
 
@@ -83,7 +98,7 @@ export const QuestionPage = () => {
                     Resourses:
                     {card.resources.map((link, index) => {
                         return <li key={index}>
-                            <a href={link.trim()} target='_blanck' rel='noreferrer'>
+                            <a href={link.trim()} target='_blank' rel='noreferrer'>
                                 {link.trim()}
                             </a>
                         </li>
