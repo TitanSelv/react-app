@@ -1,9 +1,15 @@
 
-import { useId } from "react";
+import { useId, type ChangeEvent, type FC } from "react";
 import cls from "./SearchInput.module.css"
 import { SearchIcon } from "../icons";
 
-export const SearchInput = (props) => {
+export interface ISearchInputProps {
+    value: string;
+    ph: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const SearchInput: FC<ISearchInputProps> = (props) => {
     const inputId = useId()
     return (
         <div className={cls.inputContainer}>

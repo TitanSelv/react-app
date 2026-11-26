@@ -1,17 +1,18 @@
 import { useActionState } from 'react';
-import { API_URL } from '../../constants';
+import { API_URL } from '../../constants/global.constants';
 import cls from './AddQuestionPage.module.css';
 import { toast } from 'react-toastify';
 import { delayFn } from '../../helpers/delayFn';
 import { Loader } from '../../components/Loader';
 import QuestionForm from '../../components/QuestionForm/QuestionForm';
+import type { IQuestionFormState } from '../../types/global.types';
 
 
-const createActionState = async (_prev, formData) => {
+const createActionState = async (_prev: Partial<IQuestionFormState>, formData: FormData) => {
 
     try {
         const formValues = Object.fromEntries(formData);
-        const resources = formValues.resources.trim();
+        const resources = (formValues.resources as string).trim();
         await delayFn();
         const response = await fetch(`${API_URL}/react/`, {
             method: "POST",
@@ -34,8 +35,8 @@ const createActionState = async (_prev, formData) => {
         toast.success("A new question has been successfully created");
         return formValues.clearForm ? {} : question;
 
-    } catch (error) {
-        toast.error(error.message);
+    } catch (error: any) {
+        toast.error(error?.message);
         return {};
     }
 
@@ -45,16 +46,16 @@ const createActionState = async (_prev, formData) => {
 
 const AddQuestionPage = () => {
 
-    const [stateForm, formAction, isPanding] = useActionState(createActionState, { clearForm: true });
+    const [stateForm, formAction, isPanding] = useActionState<Partial<IQuestionFormState>, FormData>(createActionState, { clearForm: true });
 
 
     return (
         <>
 
-            {isPanding && <Loader /> }
+            {isPanding && <Loader />}
             <h1 className={cls.formTitle}>Add new question</h1>
             <div className={cls.formContainer}>
-                <QuestionForm clearCheckbox="true" formAction={formAction} stateForm={stateForm} isPanding={isPanding} btnText="Add Question"/>
+                <QuestionForm clearCheckbox={true} formAction={formAction} stateForm={stateForm} isPanding={isPanding} btnText="Add Question" />
             </div>
         </>
     );

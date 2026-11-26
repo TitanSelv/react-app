@@ -1,8 +1,17 @@
 
 import styles from "./Pagination.module.css";
 import { Button } from "../Button";
+import type { FC } from "react";
 
-const getPagination = (currentPage, totalPages) => {
+type PaginationItem = number | "...";
+
+interface IPaginationProp {
+    currentPage: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+}
+
+const getPagination = (currentPage: number, totalPages: number): PaginationItem[] => {
     if (totalPages <= 7) {
         return Array.from(
             { length: totalPages },
@@ -37,11 +46,7 @@ const getPagination = (currentPage, totalPages) => {
     ];
 };
 
-export const Pagination = ({
-    currentPage,
-    totalPages,
-    onPageChange,
-}) => {
+export const Pagination: FC<IPaginationProp> = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) {return null;}
 
     const pages = getPagination(currentPage, totalPages);

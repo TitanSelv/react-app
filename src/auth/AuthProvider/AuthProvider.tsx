@@ -1,6 +1,6 @@
 
-import { createContext, useState, type Dispatch, type FC, type ReactNode, type SetStateAction } from 'react';
-import { AUTH_STORAGE } from '../../constants';
+import { createContext, useState, type FC, type ReactNode } from 'react';
+import { AUTH_STORAGE } from '../../constants/global.constants';
 import type { IAuthContext } from '../../types/global.types';
 
 

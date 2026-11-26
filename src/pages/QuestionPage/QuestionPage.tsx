@@ -3,28 +3,20 @@ import { Badge } from '../../components/Badge/Badge';
 import { Button } from '../../components/Button';
 import cls from './QuestionPage.module.css';
 import { useEffect, useId, useState, type ChangeEvent } from 'react';
-import { API_URL } from '../../constants';
+import { API_URL } from '../../constants/global.constants';
 import { useFetch } from '../../hooks/useFetch';
 import { Loader, SmallLoader } from '../../components/Loader';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
+import type { IQuestionCard } from '../../types/global.types';
 
-export interface ICard {
-    id: number;
-    question: string;
-    answer: string;
-    description: string;
-    resources: string[];
-    level: 1 | 2 | 3;
-    completed: boolean;
-    editDate?: string;
-}
+
 
 type Color = 'green' | 'orange' | 'red';
 
 export const QuestionPage = () => {
 
-    const [card, setCard] = useState<ICard | null>(null)
+    const [card, setCard] = useState<IQuestionCard | null>(null)
     const checkboxId = useId();
     const { id } = useParams<{ id: string }>();
     const { isAuth } = useAuth();

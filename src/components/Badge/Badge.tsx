@@ -1,6 +1,12 @@
+import type { FC, ReactNode } from 'react';
 import cls from './Badge.module.css';
 
-export const Badge = (props) => {
+export interface IBadgeProps {
+    variant: "green" | "orange" | "red" | "primary";
+    children: ReactNode;
+}
+
+export const Badge: FC<IBadgeProps> = (props) => {
 
     switch (props.variant) {
         case "green":

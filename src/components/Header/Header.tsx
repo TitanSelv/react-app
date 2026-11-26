@@ -4,7 +4,7 @@ import { Button } from '../Button';
 import cls from "./Header.module.css";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { AUTH_STORAGE } from '../../constants';
+import { AUTH_STORAGE } from '../../constants/global.constants';
 import { ThemeToggler } from '../../features/ThemeToggler';
 
 const Header = () => {
@@ -12,7 +12,7 @@ const Header = () => {
     const {isAuth, setIsAuth} = useAuth();
 
     const loginHandler = () => {
-        localStorage.setItem(AUTH_STORAGE, !isAuth);
+        localStorage.setItem(AUTH_STORAGE, `${!isAuth}`);
         setIsAuth(!isAuth);
     }
 

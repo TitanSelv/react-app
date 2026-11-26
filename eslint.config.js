@@ -33,6 +33,7 @@ export default defineConfig([
       'no-duplicate-imports': 'error',
       'no-unused-vars': 'off',
       'no-unused-expressions': "warn",
+      '@typescript-eslint/no-unused-expressions': "warn",
 
       '@typescript-eslint/no-unused-vars': [
         'warn',

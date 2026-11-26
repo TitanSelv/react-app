@@ -1,34 +1,39 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import { API_URL, countSort, sortSelect } from "../../constants"
-import { QuestionCardList } from "../../components/QuestionCardList/"
+import { useEffect, useMemo, useRef, useState, type ChangeEventHandler } from "react"
+import { API_URL, countSort, sortSelect } from "../../constants/global.constants"
+import { QuestionCardList } from "../../components/QuestionCardList"
 import { Loader } from "../../components/Loader"
 import { useFetch } from "../../hooks/useFetch"
 import cls from "./HomePage.module.css"
 import { SearchInput } from "../../components/SearchInput";
 import { SortSelect } from "../../components/sortSelect"
 import { Pagination } from "../../components/Pagination"
+import type { IQuestionsResponse } from "../../types/global.types"
 
 
 const DEFAUL_PER_PAGE = 10;
 
 
 export const HomePage = () => {
-    const [cards, setCards] = useState({});;
+    const [cards, setCards] = useState<IQuestionsResponse>({
+    data: [],
+    pages: 0
+});;
     const [searchValue, setSearchValue] = useState("");
     const [sortValue, setSortValue] = useState("");
     const [countSelectValue, setCountSelectValue] = useState("10");
     const [searchParams, setSearchParams] = useState(`?_page=1&_per_page=${DEFAUL_PER_PAGE}`);
-    const controlsContainerRef = useRef();
+
+    const controlsContainerRef = useRef<HTMLDivElement | null>(null);
 
 
     const currentPage = Number(new URLSearchParams(searchParams).get("_page")) || 1;
 
-    const totalPages = cards?.pages || 0;
+    const totalPages = cards.pages;
 
-    const paginationHandler = (page) => {
+    const paginationHandler = (page: number) => {
         if (page === currentPage) {return;}
         const params = new URLSearchParams();
-        params.set("_page", page);
+        params.set("_page", String(page));
         params.set("_per_page", countSelectValue);
         if (searchValue.trim()) {
             params.set("question:contains", searchValue.trim());
@@ -43,14 +48,14 @@ export const HomePage = () => {
     };
 
 
-    const [getQuestions, isLoading, error] = useFetch(async (url) => {
+    const [getQuestions, isLoading, error] = useFetch(async (url: string) => {
         const response = await fetch(`${API_URL}/${url}`)
 
         if (!response.ok) {
             throw new Error(`Ошибка HTTP: ${response.status}`)
         }
 
-        const questions = await response.json()
+        const questions: IQuestionsResponse = await response.json()
 
         setCards(questions);
 
@@ -60,14 +65,14 @@ export const HomePage = () => {
     });
 
     const filterCards = useMemo(() => {
-        return cards?.data || [];
+        return cards.data;
     }, [cards]);
 
     useEffect(() => {
         getQuestions(`react${searchParams}`)
     }, [searchParams]);
 
-    const refHandler = (e) => {
+    const refHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
         setSearchValue(e.target.value);
     };
 
@@ -94,7 +99,7 @@ export const HomePage = () => {
         return () => clearTimeout(timeout);
     }, [searchValue]);
 
-    const sortValueHandler = (e) => {
+    const sortValueHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
         const value = e.target.value;
         setSortValue(value);
         const params = new URLSearchParams();
@@ -112,7 +117,7 @@ export const HomePage = () => {
 
 
 
-    const countSelectHandler = (e) => {
+    const countSelectHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
         const value = e.target.value;
         setCountSelectValue(value);
         const params = new URLSearchParams();

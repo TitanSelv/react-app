@@ -1,10 +1,23 @@
 
-import { level } from '../../constants';
+import type { FC } from 'react';
+import { level } from '../../constants/global.constants';
 import { Button } from '../Button';
 import { SortSelect } from '../sortSelect';
 import cls from './QuestionForm.module.css';
+import type { IQuestionFormState } from '../../types/global.types';
 
-const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox }) => {
+
+export interface IQuestionFormProps {
+    formAction: any;
+    stateForm: Partial<IQuestionFormState>;
+    isPanding: boolean;
+    btnText: string;
+    clearCheckbox?: boolean;
+}
+
+
+
+const QuestionForm: FC<IQuestionFormProps> = ({ formAction, stateForm, isPanding, btnText, clearCheckbox }) => {
 
 
 
@@ -17,8 +30,8 @@ const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox
                     defaultValue={stateForm.question}
                     name="question"
                     id="questionField"
-                    cols="30"
-                    rows="2"
+                    cols={30}
+                    rows={2}
                     required
                     placeholder='please enter a question'
                 ></textarea>
@@ -29,8 +42,8 @@ const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox
                     defaultValue={stateForm.answer}
                     name="answer"
                     id="answerField"
-                    cols="30"
-                    rows="2"
+                    cols={30}
+                    rows={2}
                     required
                     placeholder='please enter a short answer'
                 ></textarea>
@@ -41,8 +54,8 @@ const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox
                     defaultValue={stateForm.description}
                     name="description"
                     id="descriptionField"
-                    cols="30"
-                    rows="5"
+                    cols={30}
+                    rows={5}
                     required
                     placeholder='please enter a full description'
                 ></textarea>
@@ -53,14 +66,14 @@ const QuestionForm = ({ formAction, stateForm, isPanding, btnText, clearCheckbox
                     defaultValue={stateForm.resources}
                     name="resources"
                     id="resourcesField"
-                    cols="30"
-                    rows="5"
+                    cols={30}
+                    rows={5}
                     placeholder='please enter resources separated by commas'
                 ></textarea>
             </div>
             <div className={cls.formControl}>
                 <label htmlFor="levelField">Level: </label>
-                <SortSelect nameDisabled={true} defaultValue={stateForm.Level} id="levelField" name="level" constants={level} className={cls.levelSelect} />
+                <SortSelect key={stateForm.level ?? 1} nameDisabled={true} defaultValue={String(stateForm.level)} id="levelField" name="level" constants={level} className={cls.levelSelect} />
             </div>
             {clearCheckbox && <label htmlFor="clearFormField" className={cls.clearFormControl}>
                 <input className={cls.checkbox} type="checkbox" name="clearForm" id="clearFormField" defaultChecked={stateForm.clearForm} />

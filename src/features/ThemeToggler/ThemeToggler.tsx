@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { THEME_STORAGE } from '../../constants';
+import { THEME_STORAGE } from '../../constants/global.constants';
 import { useTheme } from '../../hooks/useTheme';
 import { THEME_ENUM } from '../../types/global.types';
 import cls from './ThemeToggler.module.css';
@@ -13,7 +13,7 @@ export const ThemeToggler = () => {
         const updatedTheme = isChecked ? THEME_ENUM.DARK : THEME_ENUM.LIGHT;
         setTheme(updatedTheme);
 
-        isChecked ?  document.body.classList.add("darkLayout") : document.body.classList.remove("darkLayout") ;
+        document.body.classList.toggle("darkLayout", isChecked);
 
 
         localStorage.setItem(THEME_STORAGE, updatedTheme);
